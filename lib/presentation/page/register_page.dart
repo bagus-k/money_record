@@ -88,7 +88,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 value == '' ? 'jangan kosong' : null,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            obscureText: true,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                                 fillColor: AppColor.primary.withOpacity(0.5),
