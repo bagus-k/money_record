@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:course_money_record/config/api.dart';
+import 'package:course_money_record/data/model/history.dart';
 import 'package:d_info/d_info.dart';
 import 'package:intl/intl.dart';
 
@@ -52,5 +53,41 @@ class SourceHistory {
       DInfo.closeDialog();
     }
     return responseBody['success'];
+  }
+
+  static Future<List<History>> getIncomeOutcome(
+      String id_user, String type) async {
+    String url = "${Api.history}/income_outcome.php";
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': id_user,
+      'type': type,
+    });
+
+    if (responseBody == null) {
+      return [];
+    }
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => History.fromJson(e)).toList();
+    }
+    return [];
+  }
+
+  static Future<List<History>> getIncomeOutcomeSearch(
+      String id_user, String type, String date) async {
+    String url = "${Api.history}/income_outcome_search.php";
+    Map? responseBody = await AppRequest.post(
+        url, {'id_user': id_user, 'type': type, 'date': date});
+
+    if (responseBody == null) {
+      return [];
+    }
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => History.fromJson(e)).toList();
+    }
+    return [];
   }
 }
