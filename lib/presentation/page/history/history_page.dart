@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../controller/history/c_history.dart';
+import 'detail_history_page.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -126,43 +127,52 @@ class _HistoryPageState extends State<HistoryPage> {
                     16,
                     index == _.list.length - 1 ? 16 : 8,
                   ),
-                  child: Row(
-                    children: [
-                      DView.spaceWidth(),
-                      history.type == 'Pemasukan'
-                          ? const Icon(
-                              Icons.south_west,
-                              color: Colors.green,
-                            )
-                          : const Icon(
-                              Icons.north_east,
-                              color: Colors.red,
-                            ),
-                      DView.spaceWidth(),
-                      Text(
-                        AppFormat.date(history.date!),
-                        style: const TextStyle(
-                          color: AppColor.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          AppFormat.currency(history.total!),
+                  child: InkWell(
+                    onTap: (() {
+                      Get.to(() => DetailHistoryPage(
+                          idUser: cUser.data.idUser!,
+                          date:
+                              DateFormat('yyyy-MM-dd').format(DateTime.now())));
+                    }),
+                    borderRadius: BorderRadius.circular(4),
+                    child: Row(
+                      children: [
+                        DView.spaceWidth(),
+                        history.type == 'Pemasukan'
+                            ? const Icon(
+                                Icons.south_west,
+                                color: Colors.green,
+                              )
+                            : const Icon(
+                                Icons.north_east,
+                                color: Colors.red,
+                              ),
+                        DView.spaceWidth(),
+                        Text(
+                          AppFormat.date(history.date!),
                           style: const TextStyle(
                             color: AppColor.primary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
-                          textAlign: TextAlign.end,
                         ),
-                      ),
-                      IconButton(
-                          onPressed: (() => delete(history.idHistory!)),
-                          icon: const Icon(Icons.delete_forever,
-                              color: Colors.red)),
-                    ],
+                        Expanded(
+                          child: Text(
+                            AppFormat.currency(history.total!),
+                            style: const TextStyle(
+                              color: AppColor.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: (() => delete(history.idHistory!)),
+                            icon: const Icon(Icons.delete_forever,
+                                color: Colors.red)),
+                      ],
+                    ),
                   ),
                 );
               }),

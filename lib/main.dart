@@ -1,8 +1,8 @@
 import 'package:course_money_record/config/app_color.dart';
 import 'package:course_money_record/config/session.dart';
 import 'package:course_money_record/data/model/user.dart';
+import 'package:course_money_record/presentation/page/auth/login_page.dart';
 import 'package:course_money_record/presentation/page/home_page.dart';
-import 'package:course_money_record/presentation/page/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';

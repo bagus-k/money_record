@@ -13,6 +13,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'detail_history_page.dart';
+
 class IncomeOutcomePage extends StatefulWidget {
   const IncomeOutcomePage({super.key, required this.type});
   final String type;
@@ -136,42 +138,51 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                     16,
                     index == _.list.length - 1 ? 16 : 8,
                   ),
-                  child: Row(
-                    children: [
-                      DView.spaceWidth(),
-                      Text(
-                        AppFormat.date(history.date!),
-                        style: const TextStyle(
-                          color: AppColor.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          AppFormat.currency(history.total!),
+                  child: InkWell(
+                    onTap: (() {
+                      Get.to(() => DetailHistoryPage(
+                          idUser: cUser.data.idUser!,
+                          date:
+                              DateFormat('yyyy-MM-dd').format(DateTime.now())));
+                    }),
+                    borderRadius: BorderRadius.circular(4),
+                    child: Row(
+                      children: [
+                        DView.spaceWidth(),
+                        Text(
+                          AppFormat.date(history.date!),
                           style: const TextStyle(
                             color: AppColor.primary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
-                          textAlign: TextAlign.end,
                         ),
-                      ),
-                      PopupMenuButton<String>(
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(
-                            child: Text('Update'),
-                            value: 'update',
+                        Expanded(
+                          child: Text(
+                            AppFormat.currency(history.total!),
+                            style: const TextStyle(
+                              color: AppColor.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.end,
                           ),
-                          const PopupMenuItem(
-                            child: Text('Delete'),
-                            value: 'delete',
-                          ),
-                        ],
-                        onSelected: ((value) => menuOption(value, history)),
-                      )
-                    ],
+                        ),
+                        PopupMenuButton<String>(
+                          itemBuilder: (context) => [
+                            const PopupMenuItem(
+                              child: Text('Update'),
+                              value: 'update',
+                            ),
+                            const PopupMenuItem(
+                              child: Text('Delete'),
+                              value: 'delete',
+                            ),
+                          ],
+                          onSelected: ((value) => menuOption(value, history)),
+                        )
+                      ],
+                    ),
                   ),
                 );
               }),
