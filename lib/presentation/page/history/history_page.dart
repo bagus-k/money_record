@@ -130,9 +130,11 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: InkWell(
                     onTap: (() {
                       Get.to(() => DetailHistoryPage(
-                          idUser: cUser.data.idUser!,
-                          date:
-                              DateFormat('yyyy-MM-dd').format(DateTime.now())));
+                            idUser: cUser.data.idUser!,
+                            date:
+                                DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                            type: history.type!,
+                          ));
                     }),
                     borderRadius: BorderRadius.circular(4),
                     child: Row(

@@ -11,11 +11,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DetailHistoryPage extends StatefulWidget {
   const DetailHistoryPage(
-      {super.key, required this.idUser, required this.date});
-  final String idUser, date;
+      {super.key,
+      required this.idUser,
+      required this.date,
+      required this.type});
+  final String idUser, date, type;
 
   @override
   State<DetailHistoryPage> createState() => _DetailHistoryPageState();
@@ -28,7 +32,7 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
   @override
   void initState() {
     // TODO: implement initState
-    cDetailHistory.getData(widget.idUser, widget.date);
+    cDetailHistory.getData(widget.idUser, widget.date, widget.type);
     super.initState();
   }
 
@@ -60,7 +64,13 @@ class _DetailHistoryPageState extends State<DetailHistoryPage> {
         }),
       ),
       body: GetBuilder<CDetailHistory>(builder: (_) {
-        if (_.data.date == null) return DView.nothing();
+        if (_.data.date == null) {
+          String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          if (widget.date == today && widget.type == 'Pengeluaran') {
+            return DView.empty('Belum ada Pengeluaran');
+          }
+          return DView.nothing();
+        }
         List details = jsonDecode(_.data.details!);
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           DView.spaceHeight(),
