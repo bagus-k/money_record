@@ -44,8 +44,8 @@ class CHome extends GetxController {
 
   getAnalysis(String idUser) async {
     Map data = await SourceHistory.analysis(idUser);
-    _today.value = data['today'];
-    double yesterday = data['yesterday'];
+    _today.value = data['today'].toDouble();
+    double yesterday = data['yesterday'].toDouble();
     double different = (today - yesterday).abs();
     bool isSame = today.isEqual(yesterday);
     bool isPlus = today.isGreaterThan(yesterday);
@@ -64,10 +64,10 @@ class CHome extends GetxController {
     _differentMonth.value = (monthIncome - monthOutcome).abs();
     bool isSameMonth = monthIncome.isEqual(monthOutcome);
     bool isPlusMonth = monthIncome.isGreaterThan(monthOutcome);
-    double byOutcome = monthOutcome == 0 ? 1 : monthOutcome;
-    double percentMonth = (differentMonth / byOutcome) * 100;
-    _percentIncome.value =
-        ((differentMonth / byOutcome) * 100).toStringAsFixed(1);
+    double dividerMonth =
+        (monthIncome + monthOutcome) == 0 ? 1 : (monthIncome + monthOutcome);
+    double percentMonth = (differentMonth / dividerMonth) * 100;
+    _percentIncome.value = percentMonth.toStringAsFixed(1);
     _monthPercent.value = isSameMonth
         ? 'Pemasukan\n100% sama\ndengan Pengeluaran'
         : isPlusMonth
