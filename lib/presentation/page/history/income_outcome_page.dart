@@ -1,8 +1,11 @@
 import 'package:course_money_record/config/app_color.dart';
 import 'package:course_money_record/config/app_format.dart';
 import 'package:course_money_record/data/model/history.dart';
+import 'package:course_money_record/data/source/source_history.dart';
 import 'package:course_money_record/presentation/controller/c_user.dart';
 import 'package:course_money_record/presentation/controller/history/c_income_outcome.dart';
+import 'package:course_money_record/presentation/page/history/update_history_page.dart';
+import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -25,6 +28,32 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
 
   refresh() {
     cIncomeOutcome.getList(cUser.data.idUser, widget.type);
+  }
+
+  menuOption(String value, History history) async {
+    if (value == 'update') {
+      Get.to(() => UpdateHistoryPage(
+            date: history.date!,
+            idHistory: history.idHistory!,
+          ))?.then((value) {
+        if (value ?? false) {
+          refresh();
+        }
+      });
+    } else if (value == 'delete') {
+      bool? yes = await DInfo.dialogConfirmation(
+        context,
+        'Hapus history',
+        'Yakin untuk menghapus history?',
+        textNo: 'Batal',
+        textYes: "Ya",
+      );
+
+      if (yes == true) {
+        bool success = await SourceHistory.delete(history.idHistory!);
+        if (success) refresh();
+      }
+    }
   }
 
   @override
@@ -105,14 +134,14 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                     16,
                     index == 0 ? 16 : 8,
                     16,
-                    index == 0 ? 16 : 8,
+                    index == _.list.length - 1 ? 16 : 8,
                   ),
                   child: Row(
                     children: [
                       DView.spaceWidth(),
                       Text(
                         AppFormat.date(history.date!),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColor.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -121,7 +150,7 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                       Expanded(
                         child: Text(
                           AppFormat.currency(history.total!),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColor.primary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -129,9 +158,18 @@ class _IncomeOutcomePageState extends State<IncomeOutcomePage> {
                           textAlign: TextAlign.end,
                         ),
                       ),
-                      PopupMenuButton(
-                        itemBuilder: (context) => [],
-                        onSelected: ((value) {}),
+                      PopupMenuButton<String>(
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            child: Text('Update'),
+                            value: 'update',
+                          ),
+                          const PopupMenuItem(
+                            child: Text('Delete'),
+                            value: 'delete',
+                          ),
+                        ],
+                        onSelected: ((value) => menuOption(value, history)),
                       )
                     ],
                   ),

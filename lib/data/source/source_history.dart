@@ -90,4 +90,60 @@ class SourceHistory {
     }
     return [];
   }
+
+  static Future<History?> whereDate(String id_user, String date) async {
+    String url = "${Api.history}/where_date.php";
+    Map? responseBody =
+        await AppRequest.post(url, {'id_user': id_user, 'date': date});
+
+    if (responseBody == null) {
+      return null;
+    }
+
+    if (responseBody['success']) {
+      var e = responseBody['data'];
+      return History.fromJson(e);
+    }
+    return null;
+  }
+
+  static Future<bool> update(String idHistory, String id_user, String date,
+      String type, String details, String total) async {
+    String url = "${Api.history}/update.php";
+    Map? responseBody = await AppRequest.post(url, {
+      'id_history': idHistory,
+      'id_user': id_user,
+      'date': date,
+      'type': type,
+      'details': details,
+      "total": total,
+      "updated_at": DateTime.now().toIso8601String(),
+    });
+
+    if (responseBody == null) return false;
+
+    if (responseBody['success']) {
+      DInfo.dialogSuccess("Berhasil Update History");
+      DInfo.closeDialog();
+    } else {
+      if (responseBody['message'] == 'date') {
+        DInfo.dialogError("Tanggal History tidak bisa diubah");
+      } else {
+        DInfo.dialogError("Gagal Tambah History");
+      }
+      DInfo.closeDialog();
+    }
+    return responseBody['success'];
+  }
+
+  static Future<bool> delete(String idHistory) async {
+    String url = "${Api.history}/delete.php";
+    Map? responseBody = await AppRequest.post(url, {
+      'id_history': idHistory,
+    });
+
+    if (responseBody == null) return false;
+
+    return responseBody['success'];
+  }
 }
