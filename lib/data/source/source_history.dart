@@ -146,4 +146,38 @@ class SourceHistory {
 
     return responseBody['success'];
   }
+
+  static Future<List<History>> getHistory(String id_user) async {
+    String url = "${Api.history}/history.php";
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': id_user,
+    });
+
+    if (responseBody == null) {
+      return [];
+    }
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => History.fromJson(e)).toList();
+    }
+    return [];
+  }
+
+  static Future<List<History>> historySearch(
+      String id_user, String date) async {
+    String url = "${Api.history}/history_search.php";
+    Map? responseBody =
+        await AppRequest.post(url, {'id_user': id_user, 'date': date});
+
+    if (responseBody == null) {
+      return [];
+    }
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => History.fromJson(e)).toList();
+    }
+    return [];
+  }
 }

@@ -5,6 +5,7 @@ import 'package:course_money_record/config/session.dart';
 import 'package:course_money_record/presentation/controller/c_home.dart';
 import 'package:course_money_record/presentation/controller/c_user.dart';
 import 'package:course_money_record/presentation/page/history/add_history_page.dart';
+import 'package:course_money_record/presentation/page/history/history_page.dart';
 import 'package:course_money_record/presentation/page/history/income_outcome_page.dart';
 import 'package:course_money_record/presentation/page/login_page.dart';
 import 'package:d_chart/d_chart.dart';
@@ -233,7 +234,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const Divider(height: 1),
           ListTile(
-             onTap: () {
+            onTap: () {
               Get.to(() => IncomeOutcomePage(type: 'Pengeluaran'));
             },
             leading: const Icon(Icons.north_east),
@@ -243,7 +244,9 @@ class _HomePageState extends State<HomePage> {
           ),
           const Divider(height: 1),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const HistoryPage());
+            },
             leading: const Icon(Icons.history),
             horizontalTitleGap: 0,
             title: const Text('Riwayat'),
