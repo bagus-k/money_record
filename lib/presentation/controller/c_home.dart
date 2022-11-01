@@ -49,8 +49,9 @@ class CHome extends GetxController {
     double different = (today - yesterday).abs();
     bool isSame = today.isEqual(yesterday);
     bool isPlus = today.isGreaterThan(yesterday);
-    double byYesterday = yesterday == 0 ? 1 : yesterday;
-    double percent = (different / byYesterday) * 100;
+    double dividerToday = (today + yesterday) == 0 ? 1 : (today + yesterday);
+    double percent = (different / dividerToday) * 100;
+
     _todayPercent.value = isSame
         ? '100% sama dengan kemarin'
         : isPlus
